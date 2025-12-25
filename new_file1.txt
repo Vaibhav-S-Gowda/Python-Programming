@@ -1,0 +1,13 @@
+A program converts user input into an integer. Handle invalid inputs such as alphabetic strings or symbols.
+A function computes a square root of a number handle negative inputs.
+A program performs arithmetic operations on mixed types. Handle the TypeErrors that are caused by incompatible operations.
+
+File handling
+Assume that you have csv file of emp details that consist of name, empid, dept, sal read the file and compute the following values DA = 18% of sal, HRA = 2% of sal.
+Create an output file called as emp_sal.csv where empid, HRA, DA, Gross sal is written back.
+
+Assuming that you have a file called as emp.json that has name departent, salary, display the highest salary and the lowest salary.
+Display the name of the employee that gets the highest salary and the lowest salary.
+Display the average salary per department.
+
+Write an xml file called as Employees.xml, it contains name, age, salary of every employee. Once the XML file is created modify the existing salary  by increasing it by 5%. Update the file and show the changed salary.
