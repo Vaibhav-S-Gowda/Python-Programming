@@ -28,3 +28,20 @@ orders_products["Order_Value"] = orders_products["quantity"] * orders_products["
 print("\nOrders with order value:")
 print(orders_products[["order_id", "product_id", "quantity", "Order_Value"]])
 
+# -----------------------------------------------------------------------------------
+''' Create a single DataFrame by merging orders customers and products.
+    Display order_id customer_name product_name category quantity and order value. '''
+
+combined_all = orders.merge(customer, on="customer_id", how="left") \
+                     .merge(products, on="product_id", how="left")
+
+# Add order value column
+combined_all["Order_Value"] = combined_all["quantity"] * combined_all["unit_price"]
+
+# Select final required fields
+final_df = combined_all[[
+    "order_id", "customer_name", "product_name", "category", "quantity", "Order_Value"
+]]
+
+print("\nFinal combined DataFrame:")
+print(final_df)
