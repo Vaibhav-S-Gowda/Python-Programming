@@ -1,7 +1,9 @@
-# 🚀 My Python Programming Repository
+<p align="center">
+  <img src="https://readme-typing-svg.herokuapp.com?size=28&color=9D00FF&center=true&vCenter=true&width=600&lines=Welcome+to+My+GitHub;🚀+My+Python+Programming+Repository;I+Build+Projects+with+Python;Enjoy+Exploring+🚀">
+</p>
 
 <p align="center">
-  <img src="typing.svg" width="600"/>
+  <img src="../387.png" width="300" alt="Laptop Illustration"/>
 </p>
 
 ### 📌 About This Repo
@@ -16,8 +18,9 @@ This repository contains Python assignments, examples, and data manipulation exe
 
 ---
 
+
 ## 🎯 Get Started
 
 ```bash
-git clone https://github.com/username/repo.git
+git clone https://github.com/Vaibhav-S-Gowda/Python-Programming.git
 cd repo
