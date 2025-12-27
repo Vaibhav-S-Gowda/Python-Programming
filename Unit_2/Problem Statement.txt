@@ -1,0 +1,4 @@
+A user creates folders, folders have files, files have paragraphs, paragraphs have words, each word is made up of characters.
+
+A library has books, users use library.
+A smart phone has a camera and a display (Composition). User uses the samrt phone (Aggregstion).
