@@ -45,3 +45,9 @@ print("Products: ", risky_names(products))
 ''' Order dates are stored as strings. 
     Convert the order_date column into datetime format. Verify the datatype change '''
 
+# Convert order_date column to datetime
+orders["order_date"] = pd.to_datetime(orders["order_date"])
+
+# Verify the datatype change
+print("\nData types after converting order_date: ")
+print(orders.dtypes)
