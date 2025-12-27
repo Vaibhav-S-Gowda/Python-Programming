@@ -1,0 +1,5 @@
+{
+    "alpha": {"age": 21, "city": ["Mangalore", "Sirsi"]},
+    "beta": {"age": 20, "city": "Mysore"},
+    "gamma": {"age": 18, "city": "Bangalore"}
+}
