@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <img src="../387.png" width="300" alt="Laptop Illustration"/>
+  <img src="assets/387.png" width="300" alt="Laptop Illustration"/>
 </p>
 
 ### 📌 About This Repo
