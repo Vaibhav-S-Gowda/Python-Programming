@@ -3,8 +3,9 @@
 </p>
 
 <p align="center">
-  <img src="../387.png" width="300" alt="Laptop Illustration"/>
+  <img src="https://github.com/Vaibhav-S-Gowda/Python-Programming/blob/main/Assignments%20Python/assets/387.svg" width="300" alt="Laptop Illustration"/>
 </p>
+
 
 ### 📌 About This Repo
 This repository contains Python assignments, examples, and data manipulation exercises.
