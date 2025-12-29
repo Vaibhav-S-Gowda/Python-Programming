@@ -16,3 +16,26 @@ df['Value_Smooth'] = df['Value'].rolling(window= 5, min_periods= 1).mean()
 # min_periods = 1 means that the calculation will start immediately
 
 print(df.head())
+
+plt.figure()
+plt.plot(df['Timestamp'], df['Value'], label = 'Raw', alpha = 0.5) # alpha creates transparency of the visualization to see over lapping points or lines
+plt.plot(df['Timestamp'], df['Value_Smooth'], label =  'Smoothened')
+plt.xlabel('Time')
+plt.ylabel('Temperature (C)')
+plt.title('Raw v/s Smoothened Senson Data')
+plt.legend()
+plt.xticks(rotation = 45)
+plt.tight_layout()
+plt.show()
+
+# ----------------------------
+# Mean of Temperature Readings
+# ----------------------------
+
+mid_index = len(df)//2
+
+first_half_mean = df['Value_Smooth'].iloc[:mid_index].mean()
+second_half_mean = df['Value_Smooth'].iloc[mid_index:].mean()
+
+print(f'Mean of First half: {first_half_mean} \nMean of Second half: {second_half_mean}')
+
