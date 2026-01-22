@@ -1,200 +1,145 @@
-# Web scraping of Static Webpages
-
 from urllib.request import urlopen
-
-from bs4 import BeautifulSoup as bs  # Creating a parse tree for parsed pages that can be used to extract data from a HTML page
+from bs4 import BeautifulSoup as bs
+import pandas as pd
+import matplotlib.pyplot as plt
 
 # ---------------------------------
-# Specify the URL containing the dataset
+# URL
 # ---------------------------------
 
 url = "https://tatamumbaimarathon.procam.in/results/race-results"
+html = urlopen(url)
+soup = bs(html, "lxml")
 
 # ---------------------------------
-# Pass the URL to urlopen() to get the HTML of the page
+# Title
 # ---------------------------------
 
-html = urlopen(url) # Content is returned as a file-like object that can be read and processed
-
-print(type(html), html)
+print(soup.title.text.strip())
 
 # ---------------------------------
-# Construct a BeautifulSoup object using the HTML
+# Extract table
+# NOTE: Page is JS-rendered, so this will usually return empty.
+# Code is defensive and will not crash.
 # ---------------------------------
 
-soup = bs(html, 'lxml') 
-''' It interprets the HTML
-    It takes the unprocessed HTML text and converts it into python objects
-    lxml refers to the HTML parser. 
+table = soup.find("table")
+
+if table is None:
+    print("No static table found. Page content is JavaScript-rendered.")
+    exit()
+
+# ---------------------------------
+# Extract headers
+# ---------------------------------
+
+headers = [th.get_text(strip=True) for th in table.find_all("th")]
+
+# ---------------------------------
+# Extract rows
+# ---------------------------------
+
+rows = []
+for tr in table.find_all("tr"):
+    cells = [td.get_text(strip=True) for td in tr.find_all("td")]
+    if cells:
+        rows.append(cells)
+
+# ---------------------------------
+# Create DataFrame
+# ---------------------------------
+
+df = pd.DataFrame(rows, columns=headers)
+print(df.head())
+
+# ---------------------------------
+# Basic Cleaning
+# ---------------------------------
+
+df.columns = df.columns.str.upper().str.replace("\n", " ", regex=False)
+df = df.dropna(how="any")
+
+# ---------------------------------
+# Convert FINISH TIME → minutes
+# ---------------------------------
+
+def time_to_minutes(t):
+    try:
+        h, m, s = map(int, t.split(":"))
+        return (h * 3600 + m * 60 + s) / 60
+    except:
+        return None
+
+if "FINISH TIME" in df.columns:
+    df["RUN_MINS"] = df["FINISH TIME"].apply(time_to_minutes)
+    df = df.dropna(subset=["RUN_MINS"])
+else:
+    print("FINISH TIME column not found.")
+    exit()
+
+print(df.head())
+
+# ---------------------------------
+# Visualization
+# ---------------------------------
+
+plt.hist(df["RUN_MINS"], bins=10)
+plt.xlabel("Minutes")
+plt.ylabel("Frequency")
+plt.title("Finish Time Distribution")
+plt.show()
+
+plt.boxplot(df["RUN_MINS"])
+plt.ylabel("Minutes")
+plt.title("Finish Time Boxplot")
+plt.show()
+
+if "NATIONALITY" in df.columns:
+    df["NATIONALITY"].value_counts().plot(kind="bar")
+    plt.title("Runners by Nationality")
+    plt.show()
+
+    df.groupby("NATIONALITY")["RUN_MINS"].mean().plot(kind="bar")
+    plt.title("Average Finish Time by Nationality")
+    plt.show()
+
+if "RANK" in df.columns:
+    plt.scatter(df["RANK"].astype(int), df["RUN_MINS"])
+    plt.xlabel("Rank")
+    plt.ylabel("Finish Time (mins)")
+    plt.title("Rank vs Finish Time")
+    plt.show()
+
+top10 = df.nsmallest(10, "RUN_MINS")
+
+plt.barh(top10["NAME"], top10["RUN_MINS"])
+plt.xlabel("Minutes")
+plt.title("Top 10 Fastest Runners")
+plt.show()
+
+plt.plot(df["RUN_MINS"].expanding().mean())
+plt.title("Expanding Mean of Finish Time")
+plt.ylabel("Minutes")
+plt.show()
+
+
 '''
+This website cannot be scraped fully with BeautifulSoup alone
+The results table is populated via JavaScript. Your original approach cannot work reliably.
 
-# ---------------------------------
-# Extract the title of the Webpage
-# ---------------------------------
+Correct tool for real data
+If you actually need the results:
 
-title = soup.title
-print(title, type(title))
+selenium
 
-# ---------------------------------
-# Extract the text of the webpage
-# ---------------------------------
+OR direct API calls (preferred)
 
-text = soup.get_text()
-# print(soup.text,"\n")
-# print(text,"\n")
-# print(type(text))
+OR browser network inspection
 
-# ---------------------------------
-# Extract useful HTML tags within the page
-# ---------------------------------
+Regex-based HTML stripping is incorrect
+BeautifulSoup already provides clean text safely.
 
-soup.find_all('a')
+Your plotting depended on Run_mins, which never existed
+This was a guaranteed runtime failure.
 
-# ---------------------------------
-# Print the hyperlinks
-# ---------------------------------
-
-all_links = soup.find_all('a')
-# for link in all_links:
-#     print(link.get('href'))
-
-# ---------------------------------
-# Extract Tabular data 
-# ---------------------------------
-
-rows = soup.find_all('tr')
-# print(rows)
-# print('\n\n')
-# print(type(rows))
-
-# ---------------------------------
-# Get all table rows in a list form and convert it into a dataframe
-# ---------------------------------
-
-for row in rows:
-    row_td = row.find_all('td')
-# print(row_td)
-# print('\n\n')
-# print(type(row_td))
-
-# ---------------------------------
-# Extract the data without the HTML tags
-# ---------------------------------
-
-str_cell = str(row_td)
-cleantext = bs(str_cell, 'lxml').get_text()
-# print(cleantext)
-# print('\n\n')
-# print(type(cleantext))
-
-# ---------------------------------
-# Extract the data without HTML tags using regular expressions
-# ---------------------------------
-
-import re
-
-list_row = []
-for row in rows:
-    cells = row.find_all('td')
-    str_cell = str(cells)
-    clean = re.compile('<.*?>')
-    clean_1 = (re.sub(clean, '', str_cell))
-    list_row.append(clean_1)
-    # print(list_row)
-
-# ---------------------------------
-# Convert it to dataframes 
-# ---------------------------------
-
-import pandas as pd
-df = pd.DataFrame(list_row)
-print(df.head(10))
-
-# ---------------------------------
-# Data Manipulation and Cleaning
-# ---------------------------------
-
-df1 = df[0].str.split(',', expand=True)
-''' expand = True ensures that the split values are returned as seperate columns in the df'''
-print(df1.head(5))
-
-# ---------------------------------
-# Remove the opening square bracket
-# ---------------------------------
-
-df1[0] = df1[0].str.strip('[')
-df1.head(5)
-
-# ---------------------------------
-# Remove the closing square brackets
-# ---------------------------------
-
-df1[4] = df1[4].str.strip(']')
-print(df1.head(5))
-
-# ---------------------------------
-# Get the headers for the columns
-# ---------------------------------
-
-col_labels = soup.find_all('th')
-print(col_labels)
-print('\n\n')
-print(type(col_labels))
-
-all_head = []
-col_str = str(col_labels)
-clean_text = bs(col_str, 'lxml').get_text()
-all_head.append(clean_text)
-print(all_head)
-
-df2 = pd.DataFrame(all_head)
-print(df2)
-
-df3 = df2[0].str.split(',', expand=True)
-print(df3.head())
-
-df3[0] = df3[0].str.strip('[')
-df3[4] = df3[4].str.strip(']')
-df3.head(5)
-
-# ---------------------------------
-# Merge the two dataframes
-# ---------------------------------
-
-frames = [df3, df1]
-df4 = pd.concat(frames)
-print(df4.head(5))
-
-# ---------------------------------
-# Assign the first row to be the table header
-# ---------------------------------
-
-df5 = df4.rename(columns=df4.iloc[0])
-print("\n",df5.head(5))
-
-# ---------------------------------
-# DROP all rows with missing values
-# ---------------------------------
-
-df5 = df5.dropna(axis=0, how='any')
-print(df5.head())
-
-# ---------------------------------
-# DROP Row 0 
-# ---------------------------------
-
-df5 = df5.drop(index=1)
-print(df5.head())
-
-# ---------------------------------
-# Get overview
-# ---------------------------------
-
-df5.info()
-print(df.shape)
-
-# ---------------------------------
-# Processing of the dataframe
-# ---------------------------------
-
-# Convert the finish time to total number of minutes
+'''
