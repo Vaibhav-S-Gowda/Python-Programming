@@ -1,14 +1,23 @@
 with open("practice.txt", "r") as f:
     data = f.read()
-    print(data)
 
-    num = ""
-    for i in range(len(data)):
-        if(data[i] == ","):
-            print(int(num))
-            num = ""
-        else: 
-            num += data[i]
+numbers = []
+num = ""
 
-import os
-print(os.getcwd())
+for ch in data:
+    if ch == ",":
+        numbers.append(int(num))
+        num = ""
+    else:
+        num += ch
+
+# add the last number
+numbers.append(int(num))
+
+count = 0
+for n in numbers:
+    if n % 2 == 0:
+        count += 1
+
+print("Numbers:", numbers)
+print("Even count:", count)
