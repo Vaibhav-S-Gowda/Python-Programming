@@ -14,7 +14,7 @@ print(type(html),html)
 #   construct BeautifulSoup obj using the html
 soup=bs(html,'lxml')
 
-# Extract teh title of the Webpage
+# Extract the title of the Webpage
 title=soup.title
 print(title)
 print(type(title))
