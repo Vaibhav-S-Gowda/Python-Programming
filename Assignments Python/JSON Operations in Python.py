@@ -3,7 +3,7 @@ import json
 filename = "Assignments Python/resources/data.json"
 
 def load_json_file():
-    with open("Assignments Python/resources/data.json", "r") as f:
+    with open(filename, "r") as f:
         data = json.load(f)
 
     print(data)
@@ -64,7 +64,7 @@ def python_dict_to_json_string():
         f.write(json_string)
 
 def convert_json_string_to_python_object():
-    with open(filename, "r") as f:
+    with open("Assignments Python/resources/broken.json", "r") as f:
         text = '{"name": "Marly", "age": 25}'
         obj = json.loads(text)
         print(obj)
