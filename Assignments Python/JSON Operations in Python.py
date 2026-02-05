@@ -65,12 +65,12 @@ def python_dict_to_json_string():
 
 def convert_json_string_to_python_object():
     with open("Assignments Python/resources/broken.json", "r") as f:
-        text = '{"name": "Marly", "age": 25}'
+        text = '{"name": "Vali", "age": 25}'
         obj = json.loads(text)
         print(obj)
         print(type(obj))
-        # with open(filename, "w") as f:
-        #     json.dump(obj, f, indent=4)
+        with open(filename, "w") as f:
+            json.dump(obj, f, indent=4)
 
 def handle_invalid_json():
     try:
