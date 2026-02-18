@@ -18,3 +18,25 @@ for item,count in freq.items():
     if count == max_count:
         print(f"'{item} appears {count} times")
     
+
+'''
+    Core Flow
+        Collects 10 user inputs into a list
+        Uses Counter to compute item occurrence frequency
+        Determines maximum frequency using max()
+        Filters and prints item(s) matching highest occurrence (supports ties)
+
+    Technical Highlights
+        Efficient built-in frequency computation
+        Linear time complexity → scalable for larger datasets
+        Handles duplicate detection cleanly
+
+    Scope for Enhancement
+        Dynamic input size
+        Input normalization (case handling)
+        Input validation
+        Persistence (file/database storage)
+
+    Use Case
+        Applicable in basic demand analysis, log frequency detection, and simple data analytics pipelines.
+'''
