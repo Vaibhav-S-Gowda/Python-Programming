@@ -5,7 +5,7 @@ A compilation of Python programs that I have developed while practicing core pro
 
 This repository contains a wide range of Python programs I have developed for learning, practice, and small projects. It includes scripts on IoT, data handling, visualization, algorithms, and other Python programming exercises. Each folder represents a category of projects or exercises.
 
-## 📁 Repository Structure
+## Repository Structure
 
 | Folder            | Description                                                                            |
 | ----------------- | -------------------------------------------------------------------------------------- |
@@ -18,7 +18,7 @@ This repository contains a wide range of Python programs I have developed for le
 | `Others/`         | Miscellaneous Python scripts and small experiments.                                    |
 
 
-## 🐍 Python Scripts Included
+## Python Scripts Included
 
 ### 1. IOT Folder
 
@@ -71,7 +71,7 @@ This repository contains a wide range of Python programs I have developed for le
 ### 7. Others
 
 Miscellaneous scripts for experiments or learning exercises.
-## ▶️ How to Run the Scripts
+## How to Run the Scripts
 
 1. Make sure you have Python 3 installed.
 2. Navigate to the folder containing this repository.
